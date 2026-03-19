@@ -22,7 +22,7 @@ export default function CompliancePage() {
           <span className="eyebrow">Compliance workflow</span>
           <h3>Check readiness before approval and escalation.</h3>
           <p>
-            This page gives users a clear frontend view of compliance state without
+ 
             needing backend integration yet.
           </p>
         </div>
