@@ -121,10 +121,7 @@ export default function DashboardPage() {
         <div>
           <span className="eyebrow">Next best action</span>
           <h3>Upload a new compliance report or review flagged projects.</h3>
-          <p>
-            This frontend is ready for demonstrations, interaction testing, and later
-            backend connection.
-          </p>
+          
         </div>
         <div className="cta-actions">
           <Link className="primary-button" to="/upload">
