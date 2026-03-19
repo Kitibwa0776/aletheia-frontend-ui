@@ -44,15 +44,13 @@ export default function AnalyticsPage() {
       <section className="split-grid">
         <article className="panel">
           <h3>Interpretation</h3>
-          <p>
-            This layout makes it easy to swap mock values with API data later while
-            keeping the same frontend.
+          
           </p>
         </article>
         <article className="panel">
           <h3>Export readiness</h3>
           <p>
-            You can later attach charts, PDFs, or backend analytics endpoints without
+            We can later attach charts, PDFs, or backend analytics endpoints without
             changing page structure.
           </p>
         </article>
