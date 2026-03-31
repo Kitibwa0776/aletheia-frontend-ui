@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { authApi } from "../../services/mockApi";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ export default function RegisterPage() {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    company: "",
+    password: "",
     role: "project_manager"
   });
   const [message, setMessage] = useState("");
@@ -25,17 +26,42 @@ export default function RegisterPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const response = await register(form);
+    console.log("📝 Registration submitted with data:", form);
 
-    if (!response.success) {
+    try {
+      // Call the registration API
+      console.log("🚀 Sending registration request to API...");
+      const apiResponse = await authApi.register(form);
+      console.log("✅ API Response received:", apiResponse);
+
+      // Pass the API response to the auth context register function
+      console.log("🔑 Storing user and tokens in auth context...");
+      const response = await register({
+        ...form,
+        user: apiResponse.user,
+        access: apiResponse.access,
+        refresh: apiResponse.refresh
+      });
+
+      console.log("📦 Auth context response:", response);
+
+      if (!response.success) {
+        console.error("❌ Registration failed:", response.message);
+        setIsError(true);
+        setMessage(response.message);
+        return;
+      }
+
+      console.log("🎉 Registration successful! User:", response.user);
+      setIsError(false);
+      setMessage("Account created successfully. Redirecting to dashboard...");
+      // Auto-login and redirect to dashboard since we have tokens
+      setTimeout(() => navigate("/dashboard"), 1500);
+    } catch (error) {
+      console.error("💥 Registration error:", error.message);
       setIsError(true);
-      setMessage(response.message);
-      return;
+      setMessage(error.message || "Registration failed. Please try again.");
     }
-
-    setIsError(false);
-    setMessage("Account created successfully. You can now sign in.");
-    setTimeout(() => navigate("/login"), 900);
   };
 
   return (
@@ -63,10 +89,11 @@ export default function RegisterPage() {
         </label>
 
         <label>
-          Company
+          Password
           <input
-            name="company"
-            value={form.company}
+            name="password"
+            type="password"
+            value={form.password}
             onChange={handleChange}
             required
           />
